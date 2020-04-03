@@ -38,12 +38,22 @@ public class Spot : MonoBehaviour {
         }
     }
 
-    internal void AppendConquerablesOf(Faction faction, ref List<Spot> spots) {
+    internal void AppendConquerablesOf (Faction faction, ref List<Spot> spots) {
         foreach (Spot spot in conquerableNeighbours) {
             print("Looking for conquerables, given " + faction + ", current " + spot.conqueror);
             if (spot.conqueror == faction) {
                 spots.Add(spot);
             }
+        }
+    }
+
+    internal void AppendConquerablesOfAny(ref IDictionary<Faction,List<Spot>> spots) {
+        foreach (Spot spot in conquerableNeighbours) {
+            print("Looking for conquerables of any, current " + spot.conqueror);
+            if (!spots.ContainsKey(spot.conqueror)) {
+                spots[spot.conqueror] = new List<Spot>();
+            }
+            spots[spot.conqueror].Add(spot);
         }
     }
 

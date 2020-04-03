@@ -41,6 +41,19 @@ public class Faction : MonoBehaviour {
         origin.Add(newSpot);
     }
 
+    internal void ConquerAny () {
+        IDictionary<Faction, List<Spot>> conquerables = new Dictionary<Faction, List<Spot>>();
+        origin.ForEach(spot => spot.AppendConquerablesOfAny(ref conquerables));
+        if (conquerables.Count == 0) {
+            Debug.LogWarning("No conquerables found");
+            return;
+        }
+        List<Faction> possible = new List<Faction>(conquerables.Keys);
+        Spot newSpot = conquerables[possible[Random.Range(0, possible.Count)]][Random.Range(0, conquerables.Count)];
+        newSpot.Conquer(this);
+        origin.Add(newSpot);
+    }
+
     internal void Disown(Spot spot) {
         origin.Remove(spot);
     }

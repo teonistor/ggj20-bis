@@ -25703,6 +25703,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264b9a08c9b392b4d9a71b68d6197d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  humanFaction: {fileID: 1450976208}
+  playerFactions:
+  - {fileID: 1519775450}
+  - {fileID: 365220425}
+  - {fileID: 1161149838}
+  - {fileID: 1242908011}
+  enableFaction1: 1
+  enableFaction2: 0
+  enableFaction3: 1
+  enableFaction4: 0
 --- !u!4 &1073476176
 Transform:
   m_ObjectHideFlags: 0
@@ -50157,6 +50167,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 257257209}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: neighbours.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: neighbours.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 666078747920153462, guid: a1d0f7f6e0ff3dc489c7215b8792b5f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -50216,14 +50234,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spot
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: neighbours.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: neighbours.Array.data[1]
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d0f7f6e0ff3dc489c7215b8792b5f4, type: 3}
