@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 666078747920153462}
   - component: {fileID: 1910959097483691275}
-  - component: {fileID: 5984701152686899425}
-  - component: {fileID: 5064373797194365373}
+  - component: {fileID: 6522269988021073266}
   m_Layer: 0
   m_Name: Spot
   m_TagString: Untagged
@@ -51,7 +50,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 66271f31f119b9149b743d8417591deb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.7058824}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -83,7 +82,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!135 &5984701152686899425
+--- !u!135 &6522269988021073266
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,18 +93,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.0000002
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5064373797194365373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6096331356010704401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 730eb02b60725324b9137733fe29d6da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  neighbours: []

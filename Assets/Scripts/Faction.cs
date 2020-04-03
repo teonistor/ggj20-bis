@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Faction : MonoBehaviour {
 
+   // public static Faction Human { get; private set; }
+
     [SerializeField] internal bool isDefault;
     [SerializeField] internal Color color;
-    [SerializeField] private List<Spot> origin;
+    [SerializeField] internal List<Spot> origin;
     [SerializeField] private string gameName;
     // Symbol.. 
 
@@ -22,8 +24,7 @@ public class Faction : MonoBehaviour {
             throw new System.Exception("Ce naiba");
         }
 
-        // On first frame the default faction happens. On second frame all spots assign it. On third frame player factions auto-conquer their first spot
-        yield return new WaitForEndOfFrame();
+        // On first frame the default faction happens. On second frame player factions auto-conquer their first spot
         yield return new WaitForEndOfFrame();
         origin[0].Conquer(this);
     }

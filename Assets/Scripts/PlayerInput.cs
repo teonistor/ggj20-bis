@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour {
 
-    public static Faction DefaultFaction { get; private set; }
     private List<Faction> factions;
 
 
@@ -12,13 +11,6 @@ public class PlayerInput : MonoBehaviour {
         factions = new List<Faction>();
         foreach(Faction f in FindObjectsOfType<Faction>()) {
             factions.Add(f);
-            if (f.isDefault) {
-                if (DefaultFaction == null) {
-                    DefaultFaction = f;
-                    continue;
-                }
-                throw new System.Exception("Ce naiba");
-            }
         }
         print("PlayerInput: init: Found " + factions.Count + " factions");
 
@@ -32,7 +24,7 @@ public class PlayerInput : MonoBehaviour {
             int i = Random.Range(0, factions.Count);
             int j = Random.Range(1, factions.Count);
             if (j <= i) j--;
-            print(factions[i] + " is about to conquer " + factions[j]);
+            print(factions[i] + ", who owns " + factions[i].origin.Count + ", is about to conquer " + factions[j]);
             factions[i].Conquer(factions[j]);
         }
     }

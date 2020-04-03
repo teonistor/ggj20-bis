@@ -4,22 +4,18 @@ using UnityEngine;
 
 public class Spot : MonoBehaviour {
 
-    // Can be automated
+    // Automated by custom editor button
     [SerializeField] internal List<Spot> neighbours;
 
     internal Faction conqueror;
     private List<Spot> conquerableNeighbours;
-    private Material material;
+    private SpriteRenderer spriteRenderer;
 
     // private Dictionary<Faction,Spot>
 
-    IEnumerator Start () {
+    void Start () {
         conquerableNeighbours = new List<Spot>();
-        material = GetComponent<Renderer>().material;
-
-        // On the first frame the default faction is established in the singleton. On second frame we set it.
-        yield return new WaitForEndOfFrame();
-        conqueror = PlayerInput.DefaultFaction;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     internal void Conquer(Faction conqueror) {
@@ -29,8 +25,8 @@ public class Spot : MonoBehaviour {
         foreach (Spot spot in neighbours) {
             spot.RecalculateConquerables();
         }
-        material.color = conqueror.color;
-        print("I got conquered and now have " + conquerableNeighbours.Count + " conquerable neighbours");
+        spriteRenderer.color = conqueror.color;
+        print("I got conquered and now have " + conquerableNeighbours.Count + " conquerable neighbours out of " + neighbours.Count);
     }
 
     internal void RecalculateConquerables() {
@@ -56,16 +52,21 @@ public class Spot : MonoBehaviour {
 
     }
 
-    // Called by custom editor button
+    // To be called by custom editor button
     internal void RecalculateNeighbours () {
-        neighbours.Clear();
+        neighbours = new List<Spot>();
         foreach (Collider c in Physics.OverlapSphere(transform.position, 1f)) {
             Spot s = c.GetComponent<Spot>();
             if (s != null && s != this) {
                 neighbours.Add(s);
             }
         }
-        print("Recalculated neighbours of " + gameObject.name + ", found " + neighbours.Count);
+
+        if (neighbours.Count > 0 && neighbours.Count < 5) {
+            Debug.Log("Recalculated neighbours of " + gameObject.name + ", found " + neighbours.Count);
+        } else {
+            Debug.LogWarning("Recalculated neighbours of " + gameObject.name + ", found " + neighbours.Count);
+        }
     }
 
 }
