@@ -29,6 +29,9 @@ public class Faction : MonoBehaviour {
         origin[0].Conquer(this);
     }
 
+    List<Object> sth;
+    internal Object this[int i] { get => sth[i]; set => sth[i] = value; }
+
     internal void Conquer(Faction who) {
         List<Spot> conquerables = new List<Spot>();
         origin.ForEach(spot => spot.AppendConquerablesOf(who, ref conquerables));
@@ -36,7 +39,7 @@ public class Faction : MonoBehaviour {
             Debug.LogWarning("No conquerables found");
             return;
         }
-        Spot newSpot = conquerables[Random.Range(0, conquerables.Count)];
+        Spot newSpot = conquerables.RandomElement();
         newSpot.Conquer(this);
         origin.Add(newSpot);
     }
@@ -49,7 +52,8 @@ public class Faction : MonoBehaviour {
             return;
         }
         List<Faction> possible = new List<Faction>(conquerables.Keys);
-        Spot newSpot = conquerables[possible[Random.Range(0, possible.Count)]][Random.Range(0, conquerables.Count)];
+        possible.RandomElement();
+        Spot newSpot = conquerables.RandomValue().RandomElement();
         newSpot.Conquer(this);
         origin.Add(newSpot);
     }
