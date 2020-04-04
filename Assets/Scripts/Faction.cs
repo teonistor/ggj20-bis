@@ -9,7 +9,7 @@ public class Faction : MonoBehaviour {
     [SerializeField] internal bool isDefault;
     [SerializeField] internal Color color;
     [SerializeField] internal List<Spot> origin;
-    [SerializeField] private string gameName;
+    [SerializeField] internal string gameName;
     // Symbol.. 
 
     IEnumerator Start () {

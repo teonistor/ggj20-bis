@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    // TODO Make these variables in the game
     private const float energyGain = 0.2f;
     private const float energyLoss = 0.1f;
     private const float energyDrift = 0.1f;
 
+    private const float keyWaitTime = 0.25f;
+
     private KeyCode[] keys;
     private Faction faction;
-
-    private KeyCode currentKey;
+    
     private float _energy;
 
     internal float Energy { get => _energy; private set => _energy = Mathf.Clamp01(value); }
+    internal KeyCode CurrentKey { get; private set; }
 
     internal void Init (KeyCode[] keys, Faction faction) {
         this.keys = keys;
@@ -30,15 +33,15 @@ public class Player : MonoBehaviour {
     }
 
     void RandomiseKey () {
-        currentKey = keys[Random.Range(0, keys.Length)];
-        print("Current key " + currentKey + " energy " + _energy);
+        CurrentKey = keys[Random.Range(0, keys.Length)];
+        print("Current key " + CurrentKey + " energy " + _energy);
     }
 
     void ProcessInput() {
         int whatNext = 0;
         foreach (KeyCode key in keys) {
             if (Input.GetKeyDown(key)) {
-                if (key == currentKey) {
+                if (key == CurrentKey) {
                     whatNext = 1;
                 }
                 else {

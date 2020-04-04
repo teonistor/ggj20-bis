@@ -22,19 +22,27 @@ public class PlayerInput : MonoBehaviour {
         // Array... ?
         if (enableFaction1) {
             keysOne.MoveNext();
-            gameObject.AddComponent<Player>().Init((KeyCode[])keysOne.Current, playerFactions[0]);
+            Player player = gameObject.AddComponent<Player>();
+            player.Init((KeyCode[])keysOne.Current, playerFactions[0]);
+            GeneralUI.AddPlayerUI(player, playerFactions[0]);
         }
         if (enableFaction2) {
             keysOne.MoveNext();
-            gameObject.AddComponent<Player>().Init((KeyCode[])keysOne.Current, playerFactions[1]);
+            Player player = gameObject.AddComponent<Player>();
+            player.Init((KeyCode[])keysOne.Current, playerFactions[1]);
+            GeneralUI.AddPlayerUI(player, playerFactions[1]);
         }
         if (enableFaction3) {
             keysOne.MoveNext();
-            gameObject.AddComponent<Player>().Init((KeyCode[])keysOne.Current, playerFactions[2]);
+            Player player = gameObject.AddComponent<Player>();
+            player.Init((KeyCode[])keysOne.Current, playerFactions[2]);
+            GeneralUI.AddPlayerUI(player, playerFactions[2]);
         }
         if (enableFaction4) {
             keysOne.MoveNext();
-            gameObject.AddComponent<Player>().Init((KeyCode[])keysOne.Current, playerFactions[3]);
+            Player player = gameObject.AddComponent<Player>();
+            player.Init((KeyCode[])keysOne.Current, playerFactions[3]);
+            GeneralUI.AddPlayerUI(player, playerFactions[3]);
         }
         // Input.ke
 
