@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour {
 
     private static readonly KeyCode[][] keys = {
-            new KeyCode[] { KeyCode.Q, KeyCode.W, KeyCode.A, KeyCode.S },
+            new KeyCode[] { KeyCode.D, KeyCode.W, KeyCode.A, KeyCode.S },
             new KeyCode[] { KeyCode.LeftArrow, KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow },
-            new KeyCode[] { KeyCode.I, KeyCode.O, KeyCode.K, KeyCode.L },
-            new KeyCode[] { KeyCode.G, KeyCode.H, KeyCode.B, KeyCode.N } };
+            new KeyCode[] { KeyCode.I, KeyCode.J, KeyCode.K, KeyCode.L },
+            new KeyCode[] { KeyCode.G, KeyCode.V, KeyCode.B, KeyCode.N } };
 
     [SerializeField] private Faction humanFaction;
     [SerializeField] private List<Faction> playerFactions;

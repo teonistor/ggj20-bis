@@ -12,7 +12,7 @@ public class PlayerUI : MonoBehaviour {
 
     internal void Init(Player player, Faction faction) {
         this.player = player;
-        this.textFormat = faction.gameName + "\n{0}";
+        this.textFormat = faction.gameName + ": {0}\n{1}";
     }
 
     void Start () {
@@ -21,7 +21,9 @@ public class PlayerUI : MonoBehaviour {
 
     void Update () {
         if (player) {
-            text.text = string.Format(textFormat, "".PadRight(Mathf.CeilToInt(player.Energy * 7), '#'));
+            text.text = string.Format(textFormat,
+                player.CurrentKey == 0 ? "" : player.CurrentKey.ToString(),
+                "".PadRight(Mathf.CeilToInt(player.Energy * 7), '#'));
         }
     }
 }
