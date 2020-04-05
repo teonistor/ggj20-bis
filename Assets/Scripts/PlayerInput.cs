@@ -19,6 +19,9 @@ public class PlayerInput : MonoBehaviour {
     IEnumerator Start () {
         IEnumerator keysOne = keys.GetEnumerator();
 
+        // On first frame the default faction happens. On second frame player factions auto-conquer their first spot. This happens through Player.Init()
+        yield return new WaitForEndOfFrame();
+
         // Array... ?
         if (enableFaction1) {
             keysOne.MoveNext();

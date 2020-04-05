@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     // TODO Make these variables in the game
-    private const float energyGain = 0.2f;
+    private const float energyGain = 0.8f; //.2f;
     private const float energyLoss = 0.1f;
     private const float energyDrift = 0.1f;
     private const float keyPresentTime = 1.25f;
     private const float keyAbsentTime = 0.25f;
 
     private KeyCode[] keys;
-    private Faction faction;
+    internal Faction faction { get; private set; }
     
     private float _energy;
     private float timeUntilKeyFlip = float.PositiveInfinity;
@@ -24,8 +24,8 @@ public class Player : MonoBehaviour {
         this.faction = faction;
         timeUntilKeyFlip = 0.5f;
 
+        faction.ConquerStartingSpot();
         RandomiseKey();
-        
     }
 
     void ConquerIfNeeded () {

@@ -12,20 +12,24 @@ public class Faction : MonoBehaviour {
     [SerializeField] internal string gameName;
     // Symbol.. 
 
-    IEnumerator Start () {
+    void Start () {
         if (isDefault) {
             foreach(Spot s in FindObjectsOfType<Spot>()) {
                 origin.Add(s);
-                s.conqueror = this;
+                s.InitialAssignHuman(this);
             }
-            yield break;
+            return;
         }
         if (origin.Count != 1) {
             throw new System.Exception("Ce naiba");
         }
 
         // On first frame the default faction happens. On second frame player factions auto-conquer their first spot
-        yield return new WaitForEndOfFrame();
+        // yield return new WaitForEndOfFrame();
+        // origin[0].Conquer(this);
+    }
+
+    internal void ConquerStartingSpot() {
         origin[0].Conquer(this);
     }
 
@@ -44,16 +48,23 @@ public class Faction : MonoBehaviour {
         origin.Add(newSpot);
     }
 
-    internal void ConquerAny () {
-        IDictionary<Faction, List<Spot>> conquerables = new Dictionary<Faction, List<Spot>>();
-        origin.ForEach(spot => spot.AppendConquerablesOfAny(ref conquerables));
+    internal Spot FindPlausibleSpotToConquer() {
+        IDictionary<Faction,Spot> conquerables = new Dictionary<Faction,Spot>();
+        // Still not good enough when we meet multiple factions
+        origin.ForEach(spot => spot.AppendNearestConquerablesOfAny(ref conquerables));
         if (conquerables.Count == 0) {
+            // Debug.LogWarning("No conquerables found");
+            return null;
+        }
+        return conquerables.RandomValue();
+    }
+
+    internal void ConquerAny () {
+        Spot newSpot = FindPlausibleSpotToConquer();
+        if (newSpot == null) {
             Debug.LogWarning("No conquerables found");
             return;
         }
-        List<Faction> possible = new List<Faction>(conquerables.Keys);
-        possible.RandomElement();
-        Spot newSpot = conquerables.RandomValue().RandomElement();
         newSpot.Conquer(this);
         origin.Add(newSpot);
     }

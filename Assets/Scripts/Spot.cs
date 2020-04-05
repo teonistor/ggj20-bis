@@ -7,7 +7,7 @@ public class Spot : MonoBehaviour {
     // Automated by custom editor button
     [SerializeField] internal List<Spot> neighbours;
 
-    internal Faction conqueror;
+    private Faction conqueror;
     private List<Spot> conquerableNeighbours;
     private SpriteRenderer spriteRenderer;
 
@@ -16,6 +16,11 @@ public class Spot : MonoBehaviour {
     void Start () {
         conquerableNeighbours = new List<Spot>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    internal void InitialAssignHuman(Faction human) {
+        conqueror = human;
+        spriteRenderer.color = human.color;
     }
 
     internal void Conquer(Faction conqueror) {
@@ -40,20 +45,29 @@ public class Spot : MonoBehaviour {
 
     internal void AppendConquerablesOf (Faction faction, ref List<Spot> spots) {
         foreach (Spot spot in conquerableNeighbours) {
-            print("Looking for conquerables, given " + faction + ", current " + spot.conqueror);
+            // print("Looking for conquerables, given " + faction + ", current " + spot.conqueror);
             if (spot.conqueror == faction) {
                 spots.Add(spot);
             }
         }
     }
 
-    internal void AppendConquerablesOfAny(ref IDictionary<Faction,List<Spot>> spots) {
+    internal void AppendConquerablesOfAny (ref IDictionary<Faction, List<Spot>> spots) {
         foreach (Spot spot in conquerableNeighbours) {
-            print("Looking for conquerables of any, current " + spot.conqueror);
+            // print("Looking for conquerables of any, current " + spot.conqueror);
             if (!spots.ContainsKey(spot.conqueror)) {
                 spots[spot.conqueror] = new List<Spot>();
             }
             spots[spot.conqueror].Add(spot);
+        }
+    }
+
+    internal void AppendNearestConquerablesOfAny(ref IDictionary<Faction,Spot> spots) {
+        foreach (Spot spot in conquerableNeighbours) {
+            // print("Looking for conquerables of any, current " + spot.conqueror);
+            if (!spots.ContainsKey(spot.conqueror) || (transform.position - spot.transform.position).sqrMagnitude < (transform.position - spots[spot.conqueror].transform.position).sqrMagnitude) {
+                spots[spot.conqueror] = spot;
+            } 
         }
     }
 

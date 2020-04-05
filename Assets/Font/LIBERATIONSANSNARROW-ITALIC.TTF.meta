@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d3fa9e2860f04a141a75995d9d063ff2
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Liberation Sans Narrow
+  fontNames:
+  - Liberation Sans Narrow
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 31aef13715a2f724280e9616093ed457, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

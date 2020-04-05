@@ -25854,7 +25854,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1073476174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.37490597, y: -2.8500478, z: 0.5579272}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -35728,7 +35728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDefault: 1
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 0}
   origin: []
   gameName: Human
 --- !u!1 &1454625454
@@ -50798,6 +50798,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 186002251}
     m_Modifications:
+    - target: {fileID: 1979209881512961837, guid: fa42ac2a36d8e4b40af5f33b8380eefd,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 27.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1979209881512961837, guid: fa42ac2a36d8e4b40af5f33b8380eefd,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -75
+      objectReference: {fileID: 0}
     - target: {fileID: 1979209882513658954, guid: fa42ac2a36d8e4b40af5f33b8380eefd,
         type: 3}
       propertyPath: m_Name

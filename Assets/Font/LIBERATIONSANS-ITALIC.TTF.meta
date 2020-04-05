@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 0dc762dccefc3a54e90d0413fe4aa593
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Liberation Sans
+  fontNames:
+  - Liberation Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 18abe8a18fc39fe4f87e88b8df56a9a5, type: 3}
+  - {fileID: 12800000, guid: 55a9dc1bb54a95443be4d9b75746167e, type: 3}
+  - {fileID: 12800000, guid: 08049c3dcdbcb8f49a46cef815f0866d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
