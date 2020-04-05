@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
 
     void RandomiseKey () {
         CurrentKey = keys[Random.Range(0, keys.Length)];
-        print("Current key " + CurrentKey + " energy " + _energy);
+        // print("Current key " + CurrentKey + " energy " + _energy);
         timeUntilKeyFlip = keyPresentTime;
     }
 

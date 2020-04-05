@@ -16,7 +16,15 @@ public class Game : MonoBehaviour {
     [SerializeField] private List<Faction> playerFactions;
     [SerializeField] private List<Spot> startingPositions;
 
-    IEnumerator Start () {
+    public void BeginGame() {
+        StartCoroutine(DoGame());
+    }
+
+    public void Quit() {
+        Application.Quit();
+    }
+
+    IEnumerator DoGame () {
         IEnumerator keysOne = keys.GetEnumerator();
         IEnumerator<Spot> startingPositionOne = startingPositions.GetEnumerator();
 
@@ -48,7 +56,8 @@ public class Game : MonoBehaviour {
 
     internal static bool PressButtonForFaction(int faction) {
         int mask = 1 << faction;
-        if (enableFactionMask == mask) {
+        // Can't disable if it would result in less than 2 remaining enabled
+        if ((enableFactionMask & mask)!= 0 && (enableFactionMask & 1) + ((enableFactionMask>>1) & 1) + ((enableFactionMask >> 2) & 1) + ((enableFactionMask >> 3) & 1) < 3 ) {
             return true;
         }
         enableFactionMask ^= mask;
