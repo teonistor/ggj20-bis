@@ -8,6 +8,7 @@ public class Faction : MonoBehaviour {
 
     [SerializeField] internal bool isDefault;
     [SerializeField] internal Color color;
+    [SerializeField] internal Sprite image;
     [SerializeField] internal string gameName;
 
     private List<Spot> origin;

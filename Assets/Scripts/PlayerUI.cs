@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerUI : MonoBehaviour {
 
     [SerializeField] private Text text;
-    [SerializeField] private Image energyBar, energyContour, boostBar, boostContour;
+    [SerializeField] private Image pic, energyBar, energyContour, boostBar, boostContour;
     [SerializeField] private GameObject keyText;
 
     private Player player;
@@ -17,6 +17,7 @@ public class PlayerUI : MonoBehaviour {
     internal void Init(Player player, Faction faction) {
         this.player = player;
         text.text = faction.gameName;
+        pic.sprite = faction.image;
         text.color = faction.color;
         energyBar.color = faction.color;
         boostBar.color = faction.color;

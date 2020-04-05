@@ -15,6 +15,7 @@ public class Game : MonoBehaviour {
     [SerializeField] private Faction humanFaction;
     [SerializeField] private List<Faction> playerFactions;
     [SerializeField] private List<Spot> startingPositions;
+    [SerializeField] private GameObject startScreen;
 
     public void BeginGame() {
         StartCoroutine(DoGame());
@@ -25,6 +26,8 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator DoGame () {
+        startScreen.SetActive(false);
+
         IEnumerator keysOne = keys.GetEnumerator();
         IEnumerator<Spot> startingPositionOne = startingPositions.GetEnumerator();
 
