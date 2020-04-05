@@ -8,11 +8,12 @@ public class Faction : MonoBehaviour {
 
     [SerializeField] internal bool isDefault;
     [SerializeField] internal Color color;
-    [SerializeField] internal List<Spot> origin;
     [SerializeField] internal string gameName;
-    // Symbol.. 
+
+    private List<Spot> origin;
 
     void Start () {
+        origin = new List<Spot>();
         if (isDefault) {
             foreach(Spot s in FindObjectsOfType<Spot>()) {
                 origin.Add(s);
@@ -20,17 +21,18 @@ public class Faction : MonoBehaviour {
             }
             return;
         }
-        if (origin.Count != 1) {
-            throw new System.Exception("Ce naiba");
-        }
+        //if (origin.Count != 1) {
+        //    throw new System.Exception("Ce naiba");
+        //}
 
         // On first frame the default faction happens. On second frame player factions auto-conquer their first spot
         // yield return new WaitForEndOfFrame();
         // origin[0].Conquer(this);
     }
 
-    internal void ConquerStartingSpot() {
-        origin[0].Conquer(this);
+    internal void ConquerStartingSpot (Spot startingSpot) {
+        origin.Add(startingSpot);
+        startingSpot.Conquer(this);
     }
 
     List<Object> sth;

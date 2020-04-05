@@ -19,12 +19,12 @@ public class Player : MonoBehaviour {
     internal float Energy { get => _energy; private set => _energy = Mathf.Clamp01(value); }
     internal KeyCode CurrentKey { get; private set; }
 
-    internal void Init (KeyCode[] keys, Faction faction) {
+    internal void Init (KeyCode[] keys, Spot startingSpot, Faction faction) {
         this.keys = keys;
         this.faction = faction;
         timeUntilKeyFlip = 0.5f;
 
-        faction.ConquerStartingSpot();
+        faction.ConquerStartingSpot(startingSpot);
         RandomiseKey();
     }
 
