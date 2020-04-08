@@ -39,41 +39,60 @@ public class Faction : MonoBehaviour {
     List<Object> sth;
     internal Object this[int i] { get => sth[i]; set => sth[i] = value; }
 
-    internal void Conquer(Faction who) {
-        List<Spot> conquerables = new List<Spot>();
-        origin.ForEach(spot => spot.AppendConquerablesOf(who, ref conquerables));
-        if (conquerables.Count == 0) {
-            Debug.LogWarning("No conquerables found");
-            return;
-        }
-        Spot newSpot = conquerables.RandomElement();
-        newSpot.Conquer(this);
-        origin.Add(newSpot);
+    internal List<Faction> FindNeighbouringFactionsExceptSelf() {
+        List<Faction> factions = new List<Faction>();
+        origin.ForEach(spot => spot.ForEachNeighbouringFactionExceptSelf(factions.Add));
+        return factions;
     }
 
-    internal Spot FindPlausibleSpotToConquer() {
-        IDictionary<Faction,Spot> conquerables = new Dictionary<Faction,Spot>();
-        // Still not good enough when we meet multiple factions
-        origin.ForEach(spot => spot.AppendNearestConquerablesOfAny(ref conquerables));
-        if (conquerables.Count == 0) {
-            // Debug.LogWarning("No conquerables found");
-            return null;
-        }
-        return conquerables.RandomValue();
+    internal List<Spot> FindNeighbouringSpotsOf(Faction faction) {
+        List<Spot> spots = new List<Spot>();
+        origin.ForEach(spot => spot.ForEachNeighbouringSpotOf(faction, spots.Add));
+        return spots;
     }
 
-    internal void ConquerAny () {
-        Spot newSpot = FindPlausibleSpotToConquer();
-        if (newSpot == null) {
-            Debug.LogWarning("No conquerables found");
-            return;
-        }
-        newSpot.Conquer(this);
-        origin.Add(newSpot);
+    internal void Conquer(Spot what) {
+        what.Conquer(this);
+        origin.Add(what);
     }
+
+    //internal void Conquer(Faction who) {
+    //    List<Spot> conquerables = new List<Spot>();
+    //    origin.ForEach(spot => spot.AppendConquerablesOf(who, ref conquerables));
+    //    if (conquerables.Count == 0) {
+    //        Debug.LogWarning("No conquerables found");
+    //        return;
+    //    }
+    //    Spot newSpot = conquerables.RandomElement();
+    //    newSpot.Conquer(this);
+    //    origin.Add(newSpot);
+    //}
+
+    //internal Spot FindPlausibleSpotToConquer() {
+    //    IDictionary<Faction,Spot> conquerables = new Dictionary<Faction,Spot>();
+    //    // Still not good enough when we meet multiple factions
+    //    origin.ForEach(spot => spot.AppendNearestConquerablesOfAny(ref conquerables));
+    //    if (conquerables.Count == 0) {
+    //        // Debug.LogWarning("No conquerables found");
+    //        return null;
+    //    }
+    //    return conquerables.RandomValue();
+    //}
+
+    //internal void ConquerAny () {
+    //    Spot newSpot = FindPlausibleSpotToConquer();
+    //    if (newSpot == null) {
+    //        Debug.LogWarning("No conquerables found");
+    //        return;
+    //    }
+    //    newSpot.Conquer(this);
+    //    origin.Add(newSpot);
+    //}
 
     internal void Disown(Spot spot) {
         origin.Remove(spot);
+        // TODO possibly notify player
+        // TODO if spot currently under attack is no longer reachable, reset energy and attack
     }
 
     void Update () {

@@ -7,75 +7,64 @@ public class Spot : MonoBehaviour {
     // Automated by custom editor button
     [SerializeField] internal List<Spot> neighbours;
 
-    private Faction conqueror;
-    private List<Spot> conquerableNeighbours;
+    private Faction owner;
     private SpriteRenderer spriteRenderer;
+    private Dictionary<Faction,List<Spot>> neighboursByOwner;
 
     // private Dictionary<Faction,Spot>
 
-    void Start () {
-        conquerableNeighbours = new List<Spot>();
+    void Awake () {
+        neighboursByOwner = new Dictionary<Faction,List<Spot>>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    IEnumerator Start() {
+        // On the first frame human assigns itself to all spots, only after that can we recalculate neighbours dictionary
+        yield return new WaitForEndOfFrame();
+        RecalculateNeighboursByOwner();
+    }
+
     internal void InitialAssignHuman(Faction human) {
-        conqueror = human;
+        owner = human;
         spriteRenderer.color = human.color;
     }
 
     internal void Conquer(Faction conqueror) {
-        this.conqueror.Disown(this);
-        this.conqueror = conqueror;
-        RecalculateConquerables();
-        foreach (Spot spot in neighbours) {
-            spot.RecalculateConquerables();
-        }
+        owner.Disown(this);
+        owner = conqueror;
         spriteRenderer.color = conqueror.color;
-        print("I got conquered and now have " + conquerableNeighbours.Count + " conquerable neighbours out of " + neighbours.Count);
-    }
-
-    internal void RecalculateConquerables() {
-        conquerableNeighbours.Clear();
         foreach (Spot spot in neighbours) {
-            if (spot.conqueror != this.conqueror) {
-                conquerableNeighbours.Add(spot);
+            // Technically I could just say "recalculate me" but doing it from the ground up is safer
+            spot.RecalculateNeighboursByOwner();
+        }
+    }
+
+    internal void RecalculateNeighboursByOwner () {
+        neighboursByOwner.Clear();
+        foreach (Spot spot in neighbours) {
+            if (!neighboursByOwner.ContainsKey(spot.owner)) {
+                neighboursByOwner[spot.owner] = new List<Spot>();
             }
+            neighboursByOwner[spot.owner].Add(spot);
         }
     }
 
-    internal void AppendConquerablesOf (Faction faction, ref List<Spot> spots) {
-        foreach (Spot spot in conquerableNeighbours) {
-            // print("Looking for conquerables, given " + faction + ", current " + spot.conqueror);
-            if (spot.conqueror == faction) {
-                spots.Add(spot);
-            }
+    internal void ForEachNeighbouringFactionExceptSelf(System.Action<Faction> consume) {
+        foreach(Faction faction in neighboursByOwner.Keys) {
+            consume(faction);
         }
     }
 
-    internal void AppendConquerablesOfAny (ref IDictionary<Faction, List<Spot>> spots) {
-        foreach (Spot spot in conquerableNeighbours) {
-            // print("Looking for conquerables of any, current " + spot.conqueror);
-            if (!spots.ContainsKey(spot.conqueror)) {
-                spots[spot.conqueror] = new List<Spot>();
-            }
-            spots[spot.conqueror].Add(spot);
+    internal void ForEachNeighbouringSpotOf (Faction faction, System.Action<Spot> consume) {
+        if (!neighboursByOwner.ContainsKey(faction)) {
+            Debug.LogWarning("Expecting to contain " + faction.gameName + " but wasn't there");
+            return;
+        }
+        foreach (Spot spot in neighboursByOwner[faction]) {
+            consume(spot);
         }
     }
-
-    internal void AppendNearestConquerablesOfAny(ref IDictionary<Faction,Spot> spots) {
-        foreach (Spot spot in conquerableNeighbours) {
-            // print("Looking for conquerables of any, current " + spot.conqueror);
-            if (!spots.ContainsKey(spot.conqueror) || (transform.position - spot.transform.position).sqrMagnitude < (transform.position - spots[spot.conqueror].transform.position).sqrMagnitude) {
-                spots[spot.conqueror] = spot;
-            } 
-        }
-    }
-
-    void Update () {
-      
-
-    }
-
+    
     // To be called by custom editor button
     internal void RecalculateNeighbours () {
         neighbours = new List<Spot>();

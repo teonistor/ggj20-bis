@@ -10,7 +10,9 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private GameObject keyText;
 
     private Player player;
-    private TextMesh keyTextInstance;
+    private TextMesh keyText1;
+    private TextMesh keyText2;
+    private Vector3 keyTextDisplacement;
     private RectTransform energyBarRectTransform, boostBarRectTransform;
     private float energyBarOffsetMaxX, energyBarOffsetMaxY, boostBarOffsetMaxX, boostBarOffsetMaxY;
 
@@ -32,8 +34,12 @@ public class PlayerUI : MonoBehaviour {
         boostBar.gameObject.SetActive(false);
         boostContour.gameObject.SetActive(false);
 
-        keyTextInstance = Instantiate(keyText).GetComponent<TextMesh>();
-        keyTextInstance.color = faction.color;
+        keyText1 = Instantiate(keyText).GetComponent<TextMesh>();
+        keyText1.color = faction.color;
+        keyText2 = Instantiate(keyText).GetComponent<TextMesh>();
+        keyText2.color = faction.color;
+        keyTextDisplacement = transform.position.normalized * -.5f;
+        keyTextDisplacement.y = keyText1.transform.position.y;
     }
 
     void Start () {
@@ -46,32 +52,32 @@ public class PlayerUI : MonoBehaviour {
             //print("AMin " + energyBarRectTransform.anchorMin + " amax " + energyBarRectTransform.anchorMax);
             energyBarRectTransform.offsetMax = new Vector2(Mathf.Lerp(energyBarRectTransform.offsetMin.x, energyBarOffsetMaxX, player.Energy), energyBarOffsetMaxY);
 
-            //text.text = string.Format(textFormat,
-            //    //player.CurrentKey == 0 ? "" : player.CurrentKey.ToString(),
-            //    "".PadRight(Mathf.CeilToInt(player.Energy * 15), '|').PadRight(15));
+            if (player.CurrentlyAttacking) {
+                keyText1.transform.position = player.CurrentlyAttacking.transform.position + keyTextDisplacement;
+                keyText1.text = NiceKey(player.CurrentKeyDirection);
 
+                if (player.AlternateAttacking) {
+                    keyText2.transform.position = player.AlternateAttacking.transform.position + keyTextDisplacement;
+                    keyText2.text = NiceKey(player.AlternateKeyDirection);
+                } else {
+                    keyText2.text = "";
+                }
 
-            keyTextInstance.text = NiceKey(player.CurrentKey);
-            Spot plausibleSpot = player.faction.FindPlausibleSpotToConquer();
-            if (plausibleSpot != null) {
-                keyTextInstance.transform.SetParent(plausibleSpot.transform, false);
+            } else {
+                keyText1.text = "";
+                keyText2.text = "";
             }
         }
     }
 
-    string NiceKey(KeyCode keyCode) {
-        switch(keyCode) {
-            case 0: return "";
+    string NiceKey(KeyDirection direction) {
+        switch(direction) {
         // Arrows are such a bitch! It's hard to find a set that works in Unity. These triangles are nice, but a bit too easily confused...
-            case KeyCode.LeftArrow:
-            case KeyCode.A: return "◀";
-            case KeyCode.RightArrow:
-            case KeyCode.D: return "▶"; // "➔";
-            case KeyCode.UpArrow:
-            case KeyCode.W: return "▲";
-            case KeyCode.DownArrow:
-            case KeyCode.S: return "▼";
-            default: return keyCode.ToString();
+            case KeyDirection.Left: return "◀";
+            case KeyDirection.Up: return "▲";
+            case KeyDirection.Right: return "▶"; // "➔";
+            case KeyDirection.Down: return "▼";
+            default: return "";
         }
     }
 }
