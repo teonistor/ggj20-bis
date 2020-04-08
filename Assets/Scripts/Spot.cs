@@ -36,6 +36,7 @@ public class Spot : MonoBehaviour {
         foreach (Spot spot in neighbours) {
             // Technically I could just say "recalculate me" but doing it from the ground up is safer
             spot.RecalculateNeighboursByOwner();
+            print("Got here from " + owner.gameName);
         }
     }
 
@@ -49,9 +50,11 @@ public class Spot : MonoBehaviour {
         }
     }
 
-    internal void ForEachNeighbouringFactionExceptSelf(System.Action<Faction> consume) {
-        foreach(Faction faction in neighboursByOwner.Keys) {
-            consume(faction);
+    internal void ForEachNeighbouringFactionExcept(Faction excepted, System.Func<Faction,bool> consume) {
+        foreach (Faction faction in neighboursByOwner.Keys) {
+            if (faction != excepted) {
+                consume(faction);
+            }
         }
     }
 

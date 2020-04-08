@@ -38,7 +38,7 @@ public class PlayerUI : MonoBehaviour {
         keyText1.color = faction.color;
         keyText2 = Instantiate(keyText).GetComponent<TextMesh>();
         keyText2.color = faction.color;
-        keyTextDisplacement = transform.position.normalized * -.5f;
+        keyTextDisplacement = Vector3.zero;// TODO fix to transform.position.normalized * -.5f;
         keyTextDisplacement.y = keyText1.transform.position.y;
     }
 
@@ -52,11 +52,11 @@ public class PlayerUI : MonoBehaviour {
             //print("AMin " + energyBarRectTransform.anchorMin + " amax " + energyBarRectTransform.anchorMax);
             energyBarRectTransform.offsetMax = new Vector2(Mathf.Lerp(energyBarRectTransform.offsetMin.x, energyBarOffsetMaxX, player.Energy), energyBarOffsetMaxY);
 
-            if (player.CurrentlyAttacking) {
+            if (player.CurrentKeyCode != 0) {
                 keyText1.transform.position = player.CurrentlyAttacking.transform.position + keyTextDisplacement;
                 keyText1.text = NiceKey(player.CurrentKeyDirection);
 
-                if (player.AlternateAttacking) {
+                if (player.AlternateKeyCode != 0) {
                     keyText2.transform.position = player.AlternateAttacking.transform.position + keyTextDisplacement;
                     keyText2.text = NiceKey(player.AlternateKeyDirection);
                 } else {

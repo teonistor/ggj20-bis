@@ -39,9 +39,9 @@ public class Faction : MonoBehaviour {
     List<Object> sth;
     internal Object this[int i] { get => sth[i]; set => sth[i] = value; }
 
-    internal List<Faction> FindNeighbouringFactionsExceptSelf() {
-        List<Faction> factions = new List<Faction>();
-        origin.ForEach(spot => spot.ForEachNeighbouringFactionExceptSelf(factions.Add));
+    internal HashSet<Faction> FindNeighbouringFactionsExceptSelf() {
+        HashSet<Faction> factions = new HashSet<Faction>();
+        origin.ForEach(spot => spot.ForEachNeighbouringFactionExcept(this, factions.Add));
         return factions;
     }
 

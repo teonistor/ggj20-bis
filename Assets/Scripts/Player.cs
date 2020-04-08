@@ -49,9 +49,9 @@ public class Player : MonoBehaviour {
     void RandomiseKey () {
         if (CurrentlyAttacking == null) {
             Faction a, b;
-            List<Faction> found = faction.FindNeighbouringFactionsExceptSelf();
+            HashSet<Faction> found = faction.FindNeighbouringFactionsExceptSelf();
             found.UpToTwoRandomElements(out a, out b);
-            printIf("Factions: " + a?.gameName + ", " + b?.gameName + " out of " + found.Count);
+            printIf("Factions of " + faction.gameName +": " + a?.gameName + ", " + b?.gameName + " out of " + found.Count);
             if (a != null) {
                 CurrentlyAttacking = faction.FindNeighbouringSpotsOf(a).RandomElement();
                 if (b != null) {

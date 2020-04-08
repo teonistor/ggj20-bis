@@ -33,6 +33,24 @@ public static class MyExtensions {
         }
     }
 
+    public static void UpToTwoRandomElements<T> (this ISet<T> set, out T a, out T b) {
+        switch (set.Count) {
+            case 0:
+                a = default;
+                b = default;
+                return;
+            case 1:
+                IEnumerator<T> next = set.GetEnumerator();
+                next.MoveNext();
+                a = next.Current;
+                b = default;
+                return;
+            default:
+                new List<T>(set).UpToTwoRandomElements(out a, out b);
+                return;
+        }
+    }
+
     public static V RandomValue<K, V> (this IDictionary<K, V> dict) {
         IEnumerator<V> iter = dict.Values.GetEnumerator();
         for (int n = Random.Range(0, dict.Count); n >= 0; n--) {
