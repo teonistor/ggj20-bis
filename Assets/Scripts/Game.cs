@@ -11,6 +11,7 @@ public class Game : MonoBehaviour {
             new KeyCode[] { KeyCode.V, KeyCode.G, KeyCode.N, KeyCode.B } };
 
     private static int enableFactionMask = 3; // 1 + 2
+    private static List<Faction> factionsAlive;
 
     [SerializeField] private Faction humanFaction;
     [SerializeField] private List<Faction> playerFactions;
@@ -26,6 +27,8 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator DoGame () {
+        factionsAlive = new List<Faction>();
+        factionsAlive.Add(humanFaction);
         startScreen.SetActive(false);
 
         IEnumerator keysOne = keys.GetEnumerator();
@@ -36,6 +39,7 @@ public class Game : MonoBehaviour {
 
         for (int i = 0; i < 4; i++) {
             if (IsFactionActive(i)) {
+                factionsAlive.Add(playerFactions[i]);
                 keysOne.MoveNext();
                 startingPositionOne.MoveNext();
 
@@ -46,7 +50,7 @@ public class Game : MonoBehaviour {
         }
 
         while (true) {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(10f);
             // TODO Give Human some power in here...
 
             //int i = Random.Range(0, factions.Count);
@@ -69,6 +73,13 @@ public class Game : MonoBehaviour {
 
     internal static bool IsFactionActive(int faction) {
         return (enableFactionMask & (1 << faction)) != 0;
+    }
+
+    internal static void NotifyFactionKilled(Faction faction) {
+        factionsAlive.Remove(faction);
+        if (factionsAlive.Count == 1) {
+            GeneralUI.EndGame(factionsAlive[0].gameName);
+        }
     }
 
 

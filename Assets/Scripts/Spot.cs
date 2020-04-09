@@ -36,7 +36,6 @@ public class Spot : MonoBehaviour {
         foreach (Spot spot in neighbours) {
             // Technically I could just say "recalculate me" but doing it from the ground up is safer
             spot.RecalculateNeighboursByOwner();
-            print("Got here from " + owner.gameName);
         }
     }
 

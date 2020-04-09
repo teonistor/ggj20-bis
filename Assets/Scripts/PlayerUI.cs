@@ -8,6 +8,8 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private Text text;
     [SerializeField] private Image pic, energyBar, energyContour, boostBar, boostContour;
     [SerializeField] private GameObject keyText;
+    [SerializeField] private GameObject killedIndicator;
+    [SerializeField] private GameObject keysIndicator;
 
     private Player player;
     private TextMesh keyText1;
@@ -40,10 +42,8 @@ public class PlayerUI : MonoBehaviour {
         keyText2.color = faction.color;
         keyTextDisplacement = Vector3.zero;// TODO fix to transform.position.normalized * -.5f;
         keyTextDisplacement.y = keyText1.transform.position.y;
-    }
 
-    void Start () {
-
+        faction.playerUI = this;
     }
 
     void Update () {
@@ -68,6 +68,12 @@ public class PlayerUI : MonoBehaviour {
                 keyText2.text = "";
             }
         }
+    }
+
+    internal void NotifyKilled() {
+        killedIndicator.SetActive(true);
+        print("Deci?");
+        //keysIndicator.SetActive(false);
     }
 
     string NiceKey(KeyDirection direction) {

@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
         this.faction = faction;
         timeUntilKeyFlip = 0.5f;
 
-        faction.ConquerStartingSpot(startingSpot);
+        faction.Init(this, startingSpot);
         RandomiseKey();
     }
 
@@ -139,6 +139,11 @@ public class Player : MonoBehaviour {
 
         Energy -= energyDrift * Time.deltaTime;
         ProcessInput();
+    }
+
+    internal void NotifyConquer() {
+        CurrentlyAttacking = null;
+        AnullKey();
     }
 
     void printIf(string s) {
