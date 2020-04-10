@@ -26,7 +26,8 @@ public class Antibody : MonoBehaviour {
         pos.y = 2* heightAnimation.Evaluate(t);
         transform.position = pos;
 
-        t += Time.deltaTime; // Assume the action takes a second
+        // Assume the action takes a second
+        t += Time.deltaTime;
         if (t > 1f) {
             callback();
             Destroy(gameObject);

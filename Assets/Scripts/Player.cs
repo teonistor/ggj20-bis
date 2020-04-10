@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     // TODO Make these variables in the game
-    private const float energyGain = 0.8f; //.2f;
-    private const float energyLoss = 0.1f;
+    private const float energyGain = 0.4f;
+    private const float energyLoss = 0.15f;
     private const float energyDrift = 0.1f;
     private const float keyPresentTime = 1.25f;
     private const float keyAbsentTime = 0.25f;
@@ -123,6 +123,11 @@ public class Player : MonoBehaviour {
     }
 
     void Update () {
+        if (keys == null) {
+            // Pre-Init defense
+            return;
+        }
+
         ConquerIfNeeded();
 
         timeUntilKeyFlip -= Time.deltaTime;

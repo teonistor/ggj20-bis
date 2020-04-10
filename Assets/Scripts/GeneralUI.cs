@@ -8,6 +8,7 @@ public class GeneralUI : MonoBehaviour {
 
     [SerializeField] private List<PlayerUI> playerUis;
     [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameObject endScreenButtons;
     [SerializeField] private Text endScreenText;
     private static IEnumerator<PlayerUI> nextPlayerUI;
     private static GeneralUI instance;
@@ -18,11 +19,11 @@ public class GeneralUI : MonoBehaviour {
         Time.timeScale = 1f;
     }
 
-    internal static void AddPlayerUI (Player player, Faction faction) {
+    internal static void AddPlayerUI (Player player, Faction faction, string keysIndicative) {
         nextPlayerUI.MoveNext();
         PlayerUI pui = nextPlayerUI.Current;
         pui.gameObject.SetActive(true);
-        pui.Init(player, faction);
+        pui.Init(player, faction, keysIndicative);
     }
 
     internal static void EndGame(string winner) {
@@ -31,6 +32,7 @@ public class GeneralUI : MonoBehaviour {
 
     IEnumerator EndWaitRestart(string winner, float wait) {
         // Gotta give the Player UI one frame's time to update the killed status of the last killed player
+        // (or maybe it's another concurrency bug and this fixes it)
         yield return new WaitForEndOfFrame();
 
         endScreen.SetActive(true);
@@ -39,21 +41,21 @@ public class GeneralUI : MonoBehaviour {
 
 
         float incr = 1f / 30f;
-        float oneWait = incr / wait;
+        //float oneWait = incr / wait;
         float h, s, v;
         Color.RGBToHSV(endScreenText.color, out h, out s, out v);
-        for (float t = 0f; t < 1f; t += incr) {
+        for (float t = 0f; t < 2f; t += incr) {
             endScreenText.color = Color.HSVToRGB(Mathf.Repeat((h + t), 1f), s, v);
-            yield return new WaitForSecondsRealtime(oneWait);
+            yield return new WaitForSecondsRealtime(incr);
         }
+        endScreenButtons.SetActive(true);
+        for (float t = 0f;; t += incr) {
+            endScreenText.color = Color.HSVToRGB(Mathf.Repeat((h + t), 1f), s, v);
+            yield return new WaitForSecondsRealtime(incr);
+        }
+    }
+
+    public void Reload () {
         SceneManager.LoadSceneAsync(0);
-    }
-
-    void Start () {
-
-    }
-
-    void Update () {
-
     }
 }

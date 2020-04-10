@@ -9,6 +9,8 @@ public class Game : MonoBehaviour {
             new KeyCode[] { KeyCode.LeftArrow, KeyCode.UpArrow, KeyCode.RightArrow, KeyCode.DownArrow },
             new KeyCode[] { KeyCode.J, KeyCode.I, KeyCode.L, KeyCode.K },
             new KeyCode[] { KeyCode.V, KeyCode.G, KeyCode.N, KeyCode.B } };
+    private static readonly string[] playerUiKeyIndicatives = {
+            "WASD", "Arrow Keys", "IJKL", "GVBN" };
 
     private static int enableFactionMask = 3; // 1 + 2
     private static List<Faction> factionsAlive;
@@ -16,40 +18,55 @@ public class Game : MonoBehaviour {
     [SerializeField] private Faction humanFaction;
     [SerializeField] private List<Faction> playerFactions;
     [SerializeField] private List<Spot> startingPositions;
+    [SerializeField] private CameraPan cameraPan;
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject antibody;
 
     public void BeginGame() {
-        StartCoroutine(DoGame());
+        StartCoroutine(BeginGame0());
     }
 
     public void Quit() {
         Application.Quit();
     }
 
-    IEnumerator DoGame () {
+    IEnumerator BeginGame0 () {
         factionsAlive = new List<Faction>();
         factionsAlive.Add(humanFaction);
         startScreen.SetActive(false);
 
         IEnumerator keysOne = keys.GetEnumerator();
+        IEnumerator keyplayerUiKeyIndicativesOne = playerUiKeyIndicatives.GetEnumerator();
         IEnumerator<Spot> startingPositionOne = startingPositions.GetEnumerator();
+
+        System.Action initPlayers = () => { };
 
         // On first frame the default faction happens. On second frame player factions auto-conquer their first spot. This happens through Player.Init()
         yield return new WaitForEndOfFrame();
 
         for (int i = 0; i < 4; i++) {
             if (IsFactionActive(i)) {
-                factionsAlive.Add(playerFactions[i]);
+                Faction factionCurrent = playerFactions[i];
+                factionsAlive.Add(factionCurrent);
                 keysOne.MoveNext();
+                keyplayerUiKeyIndicativesOne.MoveNext();
                 startingPositionOne.MoveNext();
 
                 Player player = gameObject.AddComponent<Player>();
-                player.Init((KeyCode[])keysOne.Current, startingPositionOne.Current, playerFactions[i]);
-                GeneralUI.AddPlayerUI(player, playerFactions[i]);
+                GeneralUI.AddPlayerUI(player, factionCurrent, (string)keyplayerUiKeyIndicativesOne.Current);
+
+                KeyCode[] keysOneCurrent = (KeyCode[])keysOne.Current;
+                Spot startingPositionOneCurrent = startingPositionOne.Current;
+                initPlayers += () => player.Init(keysOneCurrent, startingPositionOneCurrent, factionCurrent);
             }
         }
+        
+        cameraPan.MoveToPuzzle(() => StartCoroutine(DoGame(initPlayers)));
+        SoundFX.Begin();
+    }
 
+    IEnumerator DoGame (System.Action initPlayers) {
+        initPlayers();
 
         // Human loop..
         int spotCountMax = humanFaction.SpotCount;
@@ -72,7 +89,7 @@ public class Game : MonoBehaviour {
                     for (int i = 0; i < howManyPer && i < f.SpotCount; i++) {
                         Spot moveTo = f[i];
                         System.Action callback;
-                        if (true/*Random.Range(0f, 1f) <= chance*/) {
+                        if (Random.Range(0f, 1f) <= chance) {
                             callback = () => moveTo.Conquer(humanFaction);
                         } else {
                             callback = () => { };
@@ -83,6 +100,7 @@ public class Game : MonoBehaviour {
                     }
                 }
             }
+            SoundFX.Launch();
         }
     }
 
@@ -107,6 +125,7 @@ public class Game : MonoBehaviour {
     internal static void NotifyFactionKilled(Faction faction) {
         factionsAlive.Remove(faction);
         if (factionsAlive.Count == 1) {
+            SoundFX.Win();
             GeneralUI.EndGame(factionsAlive[0].gameName);
         }
     }

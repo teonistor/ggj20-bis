@@ -7,9 +7,9 @@ public class PlayerUI : MonoBehaviour {
 
     [SerializeField] private Text text;
     [SerializeField] private Image pic, energyBar, energyContour, boostBar, boostContour;
+    [SerializeField] private Text keysIndicator;
     [SerializeField] private GameObject keyText;
     [SerializeField] private GameObject killedIndicator;
-    [SerializeField] private GameObject keysIndicator;
 
     private Player player;
     private TextMesh keyText1;
@@ -18,7 +18,7 @@ public class PlayerUI : MonoBehaviour {
     private RectTransform energyBarRectTransform, boostBarRectTransform;
     private float energyBarOffsetMaxX, energyBarOffsetMaxY, boostBarOffsetMaxX, boostBarOffsetMaxY;
 
-    internal void Init(Player player, Faction faction) {
+    internal void Init(Player player, Faction faction, string keysIndicatorText) {
         this.player = player;
         text.text = faction.gameName;
         pic.sprite = faction.image;
@@ -35,6 +35,9 @@ public class PlayerUI : MonoBehaviour {
 
         boostBar.gameObject.SetActive(false);
         boostContour.gameObject.SetActive(false);
+
+        keysIndicator.text = keysIndicatorText;
+        keysIndicator.color = Color.Lerp(faction.color, Color.black, .25f);
 
         keyText1 = Instantiate(keyText).GetComponent<TextMesh>();
         keyText1.color = faction.color;
@@ -72,8 +75,7 @@ public class PlayerUI : MonoBehaviour {
 
     internal void NotifyKilled() {
         killedIndicator.SetActive(true);
-        print("Deci?");
-        //keysIndicator.SetActive(false);
+        keysIndicator.gameObject.SetActive(false);
     }
 
     string NiceKey(KeyDirection direction) {

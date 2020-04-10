@@ -70,7 +70,10 @@ public class Faction : MonoBehaviour {
             if (playerUI) {
                 playerUI.NotifyKilled();
             }
+            SoundFX.Kill();
             Game.NotifyFactionKilled(this);
+        } else {
+            SoundFX.Conquer();
         }
     }
     
