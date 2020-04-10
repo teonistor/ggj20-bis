@@ -17,6 +17,7 @@ public class Game : MonoBehaviour {
     [SerializeField] private List<Faction> playerFactions;
     [SerializeField] private List<Spot> startingPositions;
     [SerializeField] private GameObject startScreen;
+    [SerializeField] private GameObject antibody;
 
     public void BeginGame() {
         StartCoroutine(DoGame());
@@ -49,16 +50,44 @@ public class Game : MonoBehaviour {
             }
         }
 
-        while (true) {
-            yield return new WaitForSeconds(10f);
-            // TODO Give Human some power in here...
 
-            //int i = Random.Range(0, factions.Count);
-            //int j = Random.Range(1, factions.Count);
-            //if (j <= i) j--;
-            //print(factions[i] + ", who owns " + factions[i].origin.Count + ", is about to conquer " + factions[j]);
-            //factions[i].Conquer(factions[j]);
+        // Human loop..
+        int spotCountMax = humanFaction.SpotCount;
+        int spotCountMin = 3;
+        while (true) {
+            float wait = LerpIntervals(humanFaction.SpotCount, spotCountMin, spotCountMax, 3f, 10f);
+            yield return new WaitForSeconds(wait);
+
+            Spot moveFrom = humanFaction.RandomSpot;
+            if (!moveFrom) {
+                print("Human was killed. Exiting human loop.");
+                break;
+            }
+
+            float chance = LerpIntervals(humanFaction.SpotCount, spotCountMin, spotCountMax, 1f, .25f);
+            int howMany = Mathf.CeilToInt(LerpIntervals(humanFaction.SpotCount, spotCountMin, spotCountMax, 3f, 7f));
+            int howManyPer = howMany / (factionsAlive.Count-1);
+            foreach (Faction f in factionsAlive) {
+                if (f != humanFaction) {
+                    for (int i = 0; i < howManyPer && i < f.SpotCount; i++) {
+                        Spot moveTo = f[i];
+                        System.Action callback;
+                        if (true/*Random.Range(0f, 1f) <= chance*/) {
+                            callback = () => moveTo.Conquer(humanFaction);
+                        } else {
+                            callback = () => { };
+                        }
+                        Antibody a = Instantiate(antibody, transform).GetComponent<Antibody>();
+                        a.transform.position = moveFrom.transform.position;
+                        a.Init(chance * 4, moveTo.transform.position, callback);
+                    }
+                }
+            }
         }
+    }
+
+    float LerpIntervals(float input, float inputLo, float inputHi, float outputLo, float outputHi) {
+        return Mathf.Lerp(outputLo, outputHi, (input - inputLo) / (inputHi - inputLo));
     }
 
     internal static bool PressButtonForFaction(int faction) {

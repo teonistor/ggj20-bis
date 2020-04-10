@@ -5,6 +5,9 @@ using UnityEngine;
 public static class MyExtensions {
 
     public static T RandomElement<T> (this IList<T> list) {
+        if (list.Count == 0) {
+            return default;
+        }
         return list[Random.Range(0, list.Count)];
     }
 

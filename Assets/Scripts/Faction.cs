@@ -15,6 +15,10 @@ public class Faction : MonoBehaviour {
     internal PlayerUI playerUI;   // The spagetti nature of this code has been set in stone once I added this :(
     private List<Spot> origin;
 
+    internal int SpotCount { get => origin.Count; }
+    internal Spot RandomSpot { get => origin.RandomElement(); }
+    internal Spot this[int i] { get => origin[i]; }
+
     void Start () {
         origin = new List<Spot>();
         if (isDefault) {
@@ -39,10 +43,7 @@ public class Faction : MonoBehaviour {
         origin.Add(startingSpot);
         startingSpot.Conquer(this);
     }
-
-    List<Object> sth;
-    internal Object this[int i] { get => sth[i]; set => sth[i] = value; }
-
+    
     internal HashSet<Faction> FindNeighbouringFactionsExceptSelf() {
         HashSet<Faction> factions = new HashSet<Faction>();
         origin.ForEach(spot => spot.ForEachNeighbouringFactionExcept(this, factions.Add));
